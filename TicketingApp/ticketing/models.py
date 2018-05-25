@@ -30,6 +30,7 @@ class Ticket(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=True, default='')
     description = models.TextField()
+    owner = models.ForeignKey('auth.User', related_name='tickets', on_delete=models.CASCADE)
     category = models.CharField(
         max_length=7,
         choices=CATEGORY_CHOICES,
