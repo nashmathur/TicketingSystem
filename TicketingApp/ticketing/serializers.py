@@ -11,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'tickets')
 
 class TicketSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Ticket
-        fields = ('id', 'created', 'title', 'description', 'category', 'domain', 'status', 'solved')
+        fields = ('id', 'created', 'title', 'description', 'owner', 'category', 'domain', 'status', 'solved')
