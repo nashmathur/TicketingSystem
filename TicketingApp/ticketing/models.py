@@ -1,24 +1,24 @@
 from django.db import models
 
 CATEGORY_CHOICES = (
-    ('BUG', 'Bug Report'),
-    ('FEATURE', 'Feature Request'),
-    ('SERVICE', 'Service Request'),
-    ('OTHER', 'Other'),
+    ('Bug Report', 'Bug Report'),
+    ('Feature Request', 'Feature Request'),
+    ('Service Request', 'Service Request'),
+    ('Other', 'Other'),
 )
 
 DOMAIN_CHOICES = (
-    ('PUBLIC', 'Public'),
-    ('PRIVATE', 'Private'),
+    ('Public', 'Public'),
+    ('Private', 'Private'),
 )
 
 STATUS_CHOICES = (
-    ('RECEIVED', 'Received'),
-    ('UNDER CONSIDERATION', 'Under Consideration'),
-    ('NOT CONSIDERED', 'Won\'t Consider'),
-    ('BEING DESIGNED', 'Being Designed'),
-    ('FAILED FEASIBILITY TESTING', 'Failed Feasibility Testing'),
-    ('RESOLVED', 'Resolved'),
+    ('Received', 'Received'),
+    ('Under Consideration', 'Under Consideration'),
+    ('Won\'t consider', 'Won\'t Consider'),
+    ('Being Designed', 'Being Designed'),
+    ('Failed Feasibility Testing', 'Failed Feasibility Testing'),
+    ('Resolved', 'Resolved'),
 )
 
 

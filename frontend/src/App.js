@@ -21,12 +21,27 @@ class App extends Component {
   render() {
     return (
       <div>
-        {this.state.tickets.map(item => (
-          <div key={item.id}>
-            <h1>{item.title}</h1>
-            <span>{item.description}</span>
-          </div>
-        ))}
+        <div>
+          Login:
+          <form action="127.0.0.1:8000/api-auth/login" method="POST">
+            Username: <input type="text" name="username"/>
+            Password: <input type="password" name="password"/>
+            <input type="submit"/>
+          </form>
+        </div>
+        <div>
+          <h1> Tickets </h1> <br/>
+          {this.state.tickets.map(item => (
+            <div key={item.id}>
+              <h2>{item.title}</h2>
+              <span> Category: {item.category} </span>
+              <span> Status: {item.status}</span>
+            </div>
+          ))}
+        </div>
+        <div>
+        Form
+        </div>
       </div>
     );
   }
