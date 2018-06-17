@@ -1,12 +1,11 @@
-from django.conf.urls import url
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.conf.urls import url, include
 from ticketing import views
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'tickets', views.TicketViewSet)
+router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
-    url(r'^tickets/$', views.TicketList.as_view()),
-    url(r'^tickets/(?P<pk>[0-9]+)/$', views.TicketDetail.as_view()),
-    url(r'^users/$', views.UserList.as_view()),
-    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    url(r'^', include(router.urls))
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)
