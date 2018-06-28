@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Button, Form, } from 'semantic-ui-react'
+import { Form, } from 'semantic-ui-react'
 
 
 class LoginForm extends React.Component{
@@ -10,11 +10,11 @@ class LoginForm extends React.Component{
     this.state = {
       username: '',
       password: '',
-      csrf_token: '',
+//      csrf_token: '',
     };
   }
 
-  componentDidMount(){
+/*  componentDidMount(){
     const csrftoken = this.getCookie('csrftoken');
     this.setState({csrf_token: csrftoken});
   }
@@ -34,7 +34,7 @@ class LoginForm extends React.Component{
 
     return decodeURIComponent(xsrfCookies[0].split('=')[1]);
   }
-
+*/
 
   handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
@@ -43,9 +43,28 @@ class LoginForm extends React.Component{
   handleSubmit = (e) => {
     e.preventDefault();
     console.log(this.state);
-  }    
+    let formData = this.state;
 
-  //     let user = JSON.parse(localStorage.getItem('user'));
+    const url = 'http://127.0.0.1:8000/rest-auth/login/';
+
+    fetch(url, {
+      method: 'post',
+      mode: 'cors',
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(function (data) {
+        if (data.status != 200){
+          alert('Incorrect Credentials!');
+        }
+        console.log('Request succeeded with JSON response', data);
+      })
+      .catch(function (error) {
+        console.log('Request failed', error);
+      });
+  }    
 
   render = () => {
     return (
