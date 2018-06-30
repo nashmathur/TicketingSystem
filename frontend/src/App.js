@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+// import ReactDOM from "react-dom";
 import './App.css';
-import { Form, } from 'semantic-ui-react'
+import { Form, Grid, Segment, } from 'semantic-ui-react'
 
 
 class LoginForm extends React.Component{
@@ -10,6 +11,7 @@ class LoginForm extends React.Component{
     this.state = {
       username: '',
       password: '',
+      key: '',
 //      csrf_token: '',
     };
   }
@@ -55,16 +57,21 @@ class LoginForm extends React.Component{
       },
       body: JSON.stringify(formData),
     })
-      .then(function (data) {
-        if (data.status != 200){
+    .then(response => {
+      if(response.ok){
+        console.log('ok');
+        console.log('Request succeeded with JSON response', response);
+        response.json().then(data => {
+          console.log(data);
+          this.setState({key : data.key});
+          console.log(this.state);
+        });
+      }
+      else{
           alert('Incorrect Credentials!');
-        }
-        console.log('Request succeeded with JSON response', data);
-      })
-      .catch(function (error) {
-        console.log('Request failed', error);
-      });
-  }    
+      }
+    });
+  };    
 
   render = () => {
     return (
@@ -83,6 +90,66 @@ class LoginForm extends React.Component{
     )     
   }
 }
+
+class TicketForm extends React.Component{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+      description: '',
+      category: '',
+    };
+  }
+
+  handleChange = (e) => {
+    this.setState({[e.target.name]: e.target.value});
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
+    let formData = this.state;
+
+    const url = 'http://127.0.0.1:8000/tickets/';
+
+    fetch(url, {
+      method: 'post',
+      mode: 'cors',
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(formData),
+    })
+    .then(response => {
+      if(response.ok){
+        console.log('ok');
+        console.log('Request succeeded with JSON response', response);
+      }
+      else{
+        console.log('error');
+      }
+    });
+  };    
+
+  render = () => {
+    return (
+      <Form onSubmit={(e) => this.handleSubmit(e)} >
+        Login: 
+        <Form.Field>
+          <label>Title</label>
+          <input name='title' onChange = {(e) => this.handleChange(e)} value={this.state.title} placeholder='title' />
+        </Form.Field>
+        <Form.Field>
+          <label>Description</label>
+          <input name='description' onChange={(e) => this.handleChange(e)} value={this.state.description} placeholder='Description' />
+        </Form.Field>
+        <input type='submit'/>
+      </Form>
+    )     
+  }
+}
+
 
 
 class App extends Component {
@@ -110,22 +177,32 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div>
-          <LoginForm />
-        </div>
-        <div>
-          <h1> Tickets </h1> <br/>
-          {this.state.tickets.map(item => (
-            <div key={item.id}>
-              <h2>{item.title}</h2>
-              <span> Category: {item.category} </span>
-              <span> Status: {item.status}</span>
-            </div>
-          ))}
-        </div>
-        <div>
-        Form
-        </div>
+      <div>
+        <LoginForm />
+      </div>
+      <div>
+        <Grid stackable columns={2}>
+          <Grid.Column>
+            <Segment>
+              <div>
+                <h1> Tickets </h1> <br/>
+                  {this.state.tickets.map(item => (
+                    <div key={item.id}>
+                    <h2>{item.title}</h2>
+                    <span> Category: {item.category} </span>
+                    <span> Status: {item.status}</span>
+                    </div>
+                  ))}
+              </div>
+            </Segment>
+          </Grid.Column>
+          <Grid.Column>
+            <Segment>
+              <TicketForm />
+            </Segment>
+          </Grid.Column>
+        </Grid>
+      </div>
       </div>
     );
   }
