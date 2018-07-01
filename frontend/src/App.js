@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import ReactDOM from "react-dom";
 import './App.css';
-import { Form, Grid, Segment, } from 'semantic-ui-react'
+import { Form, Grid, Segment, Dropdown, } from 'semantic-ui-react'
 
 
 class LoginForm extends React.Component{
@@ -99,6 +99,10 @@ class TicketForm extends React.Component{
       title: '',
       description: '',
       category: '',
+      csrftoken: '3SuttufPCH1Rc7X62ianSYyImEHsyWaEexCAo2shOKlNc1d95K0a0VoDutl5iHRH',
+      username: 'nash',
+      password: 'AdminPassword',
+      key : '0998dc5c74a33dafe2969ff104d5968afde08f62',
     };
   }
 
@@ -117,7 +121,9 @@ class TicketForm extends React.Component{
       method: 'post',
       mode: 'cors',
       headers: {
-        "Content-type": "application/json"
+       // "Content-type": "application/json"
+        'Content-Type': 'application/x-www-form-urlencoded'
+
       },
       body: JSON.stringify(formData),
     })
@@ -127,15 +133,16 @@ class TicketForm extends React.Component{
         console.log('Request succeeded with JSON response', response);
       }
       else{
-        console.log('error');
+        console.log('Request failed with JSON response', response);
       }
     });
   };    
 
+
   render = () => {
     return (
       <Form onSubmit={(e) => this.handleSubmit(e)} >
-        Login: 
+      <br/>
         <Form.Field>
           <label>Title</label>
           <input name='title' onChange = {(e) => this.handleChange(e)} value={this.state.title} placeholder='title' />
@@ -144,6 +151,15 @@ class TicketForm extends React.Component{
           <label>Description</label>
           <input name='description' onChange={(e) => this.handleChange(e)} value={this.state.description} placeholder='Description' />
         </Form.Field>
+        <Form.Field>
+          <label>Category: </label>
+            <select name="category" onChange = {(e) => this.handleChange(e)}>
+              <option value="Bug Report">Volvo</option>
+              <option value="Feature Request">Fiat</option>
+              <option value="Service Request">Audi</option>
+            </select>
+        </Form.Field>
+
         <input type='submit'/>
       </Form>
     )     
@@ -159,8 +175,9 @@ class App extends Component {
       title : '',
       description: '',
       category : '',
-    }
+    },
   };
+  
 
   async componentDidMount() {
     try {

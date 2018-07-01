@@ -5,6 +5,7 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from ticketing.serializers import UserSerializer
 from rest_framework import permissions
+from rest_framework.authentication import TokenAuthentication
 from ticketing.permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -26,6 +27,8 @@ class TicketViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
+    authentication_classes = (TokenAuthentication,)
+
 
     def list(self, request):
         if str(request.user) == str('AnonymousUser'):
