@@ -33,11 +33,13 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
+#    'rest_framework.authtoken',
+#    'rest_auth',
+#    'allauth',
+#    'allauth.account',
+#    'rest_auth.registration',
+#    'provider',
+#    'provider.oauth2',
     'ticketing.apps.TicketingConfig',
     'django.contrib.sites',
     'django.contrib.admin',
@@ -50,10 +52,12 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+       'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+#        'rest_framework.authentication.TokenAuthentication',
+#        'rest_framework.authentication.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
     )
 
 }
@@ -74,8 +78,33 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000/'
+    'localhost:3000',
+    'localhost:3000/',
+)
+
+CSRF_TRUSTED_ORIGINS = (
+    'localhost:3000',
+    'localhost:3000/',
+)
+
+CSRF_COOKIE_DOMAIN = (
+    'localhost:3000',
+    'localhost:3000/',
 )
 
 ROOT_URLCONF = 'TicketingApp.urls'

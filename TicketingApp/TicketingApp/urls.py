@@ -20,5 +20,6 @@ from django.conf.urls import url, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include('ticketing.urls')),
+#    url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     url(r'^api-auth/', include('rest_framework.urls')),
 ]

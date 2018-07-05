@@ -27,7 +27,6 @@ class TicketViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
-    authentication_classes = (TokenAuthentication,)
 
 
     def list(self, request):

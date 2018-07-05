@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'semantic-ui-css/semantic.min.css';
 // import ReactDOM from "react-dom";
 import './App.css';
 import { Form, Grid, Segment, Dropdown, } from 'semantic-ui-react'
@@ -11,14 +12,14 @@ class LoginForm extends React.Component{
     this.state = {
       username: '',
       password: '',
-      key: '',
-//      csrf_token: '',
+//      key: '',
+      csrfmiddlewaretoken: '',
     };
   }
 
-/*  componentDidMount(){
+  componentDidMount(){
     const csrftoken = this.getCookie('csrftoken');
-    this.setState({csrf_token: csrftoken});
+    this.setState({csrfmiddlewaretoken: csrftoken});
   }
 
   getCookie(name) {
@@ -36,7 +37,7 @@ class LoginForm extends React.Component{
 
     return decodeURIComponent(xsrfCookies[0].split('=')[1]);
   }
-*/
+
 
   handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
@@ -47,13 +48,16 @@ class LoginForm extends React.Component{
     console.log(this.state);
     let formData = this.state;
 
-    const url = 'http://127.0.0.1:8000/rest-auth/login/';
+    const url = 'http://127.0.0.1:8000/api-auth/login/';
 
     fetch(url, {
+      credentials: 'include',
       method: 'post',
       mode: 'cors',
       headers: {
-        "Content-type": "application/json"
+        //'Content-type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRFToken': this.state.csrfmiddlewaretoken,
       },
       body: JSON.stringify(formData),
     })
@@ -68,7 +72,8 @@ class LoginForm extends React.Component{
         });
       }
       else{
-          alert('Incorrect Credentials!');
+        alert('Incorrect Credentials!');
+        console.log('Request failed with JSON response', response);
       }
     });
   };    
@@ -77,6 +82,9 @@ class LoginForm extends React.Component{
     return (
       <Form onSubmit={(e) => this.handleSubmit(e)} >
         Login: 
+        <Form.Field>
+          <input name='csrftoken' value={this.state.csrfmiddlewaretoken} hidden />
+        </Form.Field>
         <Form.Field>
           <label>Username</label>
           <input name='username' onChange = {(e) => this.handleChange(e)} value={this.state.username} placeholder='Username' />
@@ -102,7 +110,7 @@ class TicketForm extends React.Component{
       csrftoken: '3SuttufPCH1Rc7X62ianSYyImEHsyWaEexCAo2shOKlNc1d95K0a0VoDutl5iHRH',
       username: 'nash',
       password: 'AdminPassword',
-      key : '0998dc5c74a33dafe2969ff104d5968afde08f62',
+//      key : '0998dc5c74a33dafe2969ff104d5968afde08f62',
     };
   }
 
