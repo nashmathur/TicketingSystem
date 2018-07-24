@@ -8,6 +8,7 @@ router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^setcookie/$', views.setcookie),
 #    url(r'rest-auth/', include('rest_auth.urls')),
 #    url(r'rest-auth/registration/', include('rest_auth.registration.urls')),
 ]

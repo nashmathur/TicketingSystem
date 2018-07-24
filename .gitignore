@@ -1,2 +1,4 @@
 env/
 __pycache__/
+TicketingApp/ticketing/__pycache__/
+TicketingApp/TicketingApp/__pycache__/

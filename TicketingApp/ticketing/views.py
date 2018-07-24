@@ -11,16 +11,18 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import HttpResponse
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            self.permission_classes = (AllowAny,)
-        return super(UserViewSet, self).get_permissions()
+#    def get_permissions(self):
+#        if self.request.method == 'POST':
+#            self.permission_classes = (AllowAny,)
+#        return super(UserViewSet, self).get_permissions()
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
@@ -43,3 +45,7 @@ class TicketViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+@ensure_csrf_cookie
+def setcookie(request):
+    return HttpResponse('Abcd')

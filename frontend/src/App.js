@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 // import ReactDOM from "react-dom";
 import './App.css';
-import { Form, Grid, Segment, Dropdown, } from 'semantic-ui-react'
+import { Form, Grid, Segment, Dropdown, Label, Header, } from 'semantic-ui-react'
 
 
 class LoginForm extends React.Component{
@@ -48,7 +48,7 @@ class LoginForm extends React.Component{
     console.log(this.state);
     let formData = this.state;
 
-    const url = 'http://127.0.0.1:8000/api-auth/login/';
+    const url = 'api-auth/login/';
 
     fetch(url, {
       credentials: 'include',
@@ -59,7 +59,8 @@ class LoginForm extends React.Component{
         'Content-Type': 'application/x-www-form-urlencoded',
         'X-CSRFToken': this.state.csrfmiddlewaretoken,
       },
-      body: JSON.stringify(formData),
+      //body: JSON.stringify(formData),
+      body: 'username='+formData.username+'&password='+formData.password+'&csrfmiddlewaretoken='+formData.csrfmiddlewaretoken,
     })
     .then(response => {
       if(response.ok){
@@ -80,8 +81,9 @@ class LoginForm extends React.Component{
 
   render = () => {
     return (
+      
       <Form onSubmit={(e) => this.handleSubmit(e)} >
-        Login: 
+        <h2>Login:</h2> 
         <Form.Field>
           <input name='csrftoken' value={this.state.csrfmiddlewaretoken} hidden />
         </Form.Field>
@@ -123,7 +125,7 @@ class TicketForm extends React.Component{
     console.log(this.state);
     let formData = this.state;
 
-    const url = 'http://127.0.0.1:8000/tickets/';
+    const url = 'tickets/';
 
     fetch(url, {
       method: 'post',
@@ -189,7 +191,7 @@ class App extends Component {
 
   async componentDidMount() {
     try {
-      const res = await fetch('http://127.0.0.1:8000/tickets/');
+      const res = await fetch('tickets/', {credentials: 'include'});
       const tickets = await res.json();
       this.setState({
         tickets
@@ -202,27 +204,34 @@ class App extends Component {
   render() {
     return (
       <div>
+      <Header as='h1' color='violet' textAlign='center'> Ticketing System </Header>
       <div>
+      <Segment color='red'>
         <LoginForm />
+      </Segment>
       </div>
       <div>
         <Grid stackable columns={2}>
           <Grid.Column>
-            <Segment>
+            <Segment color='red'>
               <div>
                 <h1> Tickets </h1> <br/>
                   {this.state.tickets.map(item => (
                     <div key={item.id}>
                     <h2>{item.title}</h2>
-                    <span> Category: {item.category} </span>
-                    <span> Status: {item.status}</span>
+                    <Label as='a' color='purple' tag>
+                      {item.category}
+                    </Label>
+                    <Label as='a' color='blue' tag>
+                      {item.status}
+                    </Label>
                     </div>
                   ))}
               </div>
             </Segment>
           </Grid.Column>
           <Grid.Column>
-            <Segment>
+            <Segment color='red'>
               <TicketForm />
             </Segment>
           </Grid.Column>
